@@ -5,9 +5,6 @@ function convertStringToNumber(string, x) {
     var chars = string.split('')
     var number = 0
     var i = 0
-    if(x > 10) {
-        return parseInt(string, x)
-    }
     while(i < chars.length && chars[i] != '.') {
         number = number * x
         number += chars[i].codePointAt(0) - '0'.codePointAt(0)
