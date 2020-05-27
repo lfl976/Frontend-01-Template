@@ -217,14 +217,11 @@ void (async function () {
       name: "winter",
     },
   });
-
   let response = await request.send();
 
   let dom = parser.parseHTML(response.body);
-
-  console.log(JSON.stringify(dom, null, "  "));
-
-  console.log(response);
+  console.log(dom);
+  console.log(JSON.stringify(dom, null, "    "));
 })();
 
 // const client = net.createConnection({ host: '127.0.0.1', port: 8088 }, () => {
