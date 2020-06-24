@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>红绿灯</title>
+</head>
+<style type="text/css">
+	div {
+		width: 100px;
+		height: 100px;
+		border-radius: 50%;
+		background: gray;
+	}
+	.red {
+		background: red;
+	}
+	.yellow {
+		background: yellow;
+	}
+	.green {
+		background: green;
+	}
+</style>
+<body>
+<div id="red" class=""></div>
+<div id="yellow" class=""></div>
+<div id="green" class=""></div>
+
+<script type="text/javascript">
+	let sleep = ms => new Promise((resolve) => setTimeout(resolve, ms))
+	let red = document.querySelector("#red")
+	let yellow = document.querySelector("#yellow")
+	let green = document.querySelector("#green")
+
+	async function power() {
+		green.classList.add('green')
+		await sleep(5000)
+		green.classList.remove('green')
+		yellow.classList.add('yellow')
+		await sleep(3000)
+		yellow.classList.remove('yellow')
+		red.classList.add('red')
+		await sleep(10000)
+		red.classList.remove('red')
+	}
+	power()
+	setInterval(()=>{power()}, 18000)
+</script>
+</body>
+</html>
