@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="container">
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eaque optio
+      exercitationem provident? Omnis, odio. Tempore, laboriosam aperiam
+      suscipit in dicta vitae et quaerat sit iure harum explicabo quam
+      voluptates rem nemo debitis sed quidem culpa. Ipsa deserunt totam aliquid
+      sapiente minima? Qui dolorem officiis sed architecto omnis quas nesciunt
+      illum amet? Cum harum est saepe alias, ipsa consequuntur perferendis
+      aliquid error quae omnis ex id officia porro eum recusandae enim
+      repudiandae assumenda nisi, dignissimos provident corporis. Numquam
+      necessitatibus vel mollitia ex asperiores laudantium sed quae. Nesciunt
+      neque rem laborum quae error iure aliquid voluptas a recusandae odit odio,
+      cupiditate sed deserunt maiores? Labore magni velit sint rerum iusto
+      reiciendis ratione quibusdam veritatis illo commodi doloribus tempore
+      excepturi cumque, veniam expedita esse accusamus perferendis harum, id
+      distinctio voluptas nobis! Aperiam, ipsam. Voluptatem officiis facilis
+      impedit consequuntur et illum fugiat esse, modi veritatis inventore beatae
+      voluptate, ut error temporibus. Autem expedita asperiores incidunt
+      consequatur quisquam quidem suscipit deleniti exercitationem odio non quo
+      fugiat recusandae consequuntur cum est, iure fuga voluptate distinctio rem
+      voluptatum iste ab minima. Aspernatur saepe enim velit eveniet! Officiis,
+      exercitationem distinctio illo iusto voluptas quos expedita libero debitis
+      dolore, magni quaerat veritatis consectetur tempora quia necessitatibus id
+      iste vitae alias maxime omnis aperiam et tenetur corporis. Sunt at sed,
+      optio itaque deleniti amet nobis ipsam asperiores aut, qui molestiae
+      dolorum, doloribus hic recusandae sapiente? Doloribus accusantium delectus
+      cupiditate? Asperiores, numquam deserunt hic unde molestiae obcaecati
+      accusantium debitis eligendi maxime qui officiis temporibus assumenda
+      illum ea voluptates libero quae, blanditiis quidem enim reiciendis beatae
+      explicabo consequatur. Voluptatem libero sequi quam amet magnam? Quia,
+      laborum atque! Assumenda eveniet fugiat non. Aspernatur iste culpa eveniet
+      nisi neque sapiente necessitatibus, voluptatem, dolore cum eius
+      consectetur aperiam omnis quod non iusto sed, vel assumenda ex blanditiis?
+      Quasi facilis nemo culpa corporis! Vero temporibus tenetur optio eligendi
+      facere voluptate sunt minima accusamus autem nostrum, sequi quas similique
+      non animi laboriosam accusantium rerum ad quidem? Tempora, facere minus!
+      Minus expedita non autem magni totam illum fugiat? Fuga aliquam, earum
+      eius enim sint nostrum ullam nemo est qui quia repellat assumenda ad
+      deleniti. Commodi minima atque alias necessitatibus ab ipsam corrupti
+      velit doloremque. Architecto, voluptas? Maxime, repellendus, dolore, nam
+      beatae incidunt soluta corporis aut harum sequi quam facere! Quisquam
+      exercitationem expedita sequi ad impedit perspiciatis aliquam neque
+      accusamus? Cumque tempora doloribus libero perferendis asperiores animi
+      cupiditate, nobis recusandae fugit distinctio voluptates ex maiores ipsa
+      quibusdam saepe non culpa nostrum nemo. Hic excepturi ex cumque aut,
+      facere repudiandae exercitationem omnis fuga minus animi officiis iste
+      quae. Perferendis fuga magnam eum. Dolores aliquid reprehenderit
+      exercitationem accusamus culpa atque placeat vel architecto distinctio
+      consectetur quisquam voluptatem at dicta eaque ipsum, et ut? Minus ex cum
+      tempora ducimus quasi. Nisi fugiat, quisquam facilis, ex, impedit incidunt
+      soluta deleniti saepe cupiditate dolorum magni ducimus eveniet deserunt
+      molestiae dicta! Perspiciatis error adipisci nesciunt asperiores unde
+      optio dolores itaque impedit harum laborum labore quam, quo, maiores
+      quaerat laudantium. Eveniet, reiciendis quaerat temporibus aliquam
+      expedita esse unde molestiae suscipit veritatis ex fuga eligendi
+      dignissimos alias!
+    </div>
+    <div
+      id="dragable"
+      style="
+        width: 100px;
+        height: 100px;
+        background-color: chartreuse;
+        display: inline-block;
+      "
+    ></div>
+
+    <script>
+      let dragable = document.getElementById("dragable");
+
+      let baseX = 0,
+        baseY = 0;
+
+      dragable.addEventListener("mousedown", (event) => {
+        let startX = event.clientX,
+          startY = event.clientY;
+
+        let move = (event) => {
+          let range = nearest(event.clientX, event.clientY);
+          range.insertNode(dragable);
+          // let x = event.clientX - startX + baseX,
+          //   y = event.clientY - startY + baseY;
+          // dragable.style.transform = `translate(${x}px, ${y}px)`;
+        };
+        let up = (event) => {
+          baseX = baseX + event.clientX - startX;
+          baseY = baseY + event.clientY - startY;
+          document.removeEventListener("mousemove", move);
+          document.removeEventListener("mouseup", up);
+        };
+        document.addEventListener("mousemove", move);
+        document.addEventListener("mouseup", up);
+      });
+
+      let ranges = [];
+
+      let container = document.getElementById("container");
+      for (let i = 0; i < container.childNodes[0].textContent.length; i++) {
+        let range = document.createRange();
+        range.setStart(container.childNodes[0], i);
+        range.setEnd(container.childNodes[0], i);
+
+        ranges.push(range);
+      }
+
+      function nearest(x0, y0) {
+        let nearestRange = null;
+        let distance = Infinity;
+        for (let range of ranges) {
+          let { x, y } = range.getBoundingClientRect();
+          let d = (x0 - x) ** 2 + (y0 - y) ** 2;
+
+          if (d < distance) {
+            nearestRange = range;
+            distance = d;
+          }
+        }
+        return nearestRange;
+      }
+
+      document.addEventListener("selectstart", (event) =>
+        event.preventDefault()
+      );
+    </script>
+  </body>
+</html>
