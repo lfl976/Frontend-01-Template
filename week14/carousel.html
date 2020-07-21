@@ -129,7 +129,8 @@
                 offset * 500 + 500 - 500 * nextPosition
               }px)`;
 
-              position = (position - offset) % this.data.length;
+              position =
+                (position - offset + this.data.length) % this.data.length;
 
               document.removeEventListener("mousemove", move);
               document.removeEventListener("mouseup", up);
