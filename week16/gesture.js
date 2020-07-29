@@ -106,14 +106,14 @@ function enableGesture(element) {
       context.moves = context.moves.filter(
         (record) => Date.now() - record.t < 300
       );
-      element.dispatchEvent(
-        new CustomEvent("pan", {
-          startX: context.startX,
-          startY: context.startY,
-          clientX: point.clientX,
-          clientY: point.clientY,
-        })
-      );
+      let e = new CustomEvent("pan");
+      Object.assign(e, {
+        startX: context.startX,
+        startY: context.startY,
+        clientX: point.clientX,
+        clientY: point.clientY,
+      });
+      element.dispatchEvent(e);
     }
 
     // console.log("move", dx, dy);
@@ -131,26 +131,26 @@ function enableGesture(element) {
       // console.log(speed);
       let isFlick = speed > 2.5;
       if (isFlick) {
-        element.dispatchEvent(
-          new CustomEvent("panend", {
-            startX: context.startX,
-            startY: context.startY,
-            clientX: point.clientX,
-            clientY: point.clientY,
-            speed,
-          })
-        );
-      }
-      element.dispatchEvent(
-        new CustomEvent("panend", {
+        let e = new CustomEvent("panend");
+        Object.assign(e, {
           startX: context.startX,
           startY: context.startY,
           clientX: point.clientX,
           clientY: point.clientY,
           speed,
-          isFlick,
-        })
-      );
+        });
+        element.dispatchEvent(e);
+      }
+      let e = new CustomEvent("panend");
+      Object.assign(e, {
+        startX: context.startX,
+        startY: context.startY,
+        clientX: point.clientX,
+        clientY: point.clientY,
+        speed,
+        isFlick,
+      });
+      element.dispatchEvent(e);
     }
     if (context.isTap) {
       element.dispatchEvent(new CustomEvent("tap", {}));
